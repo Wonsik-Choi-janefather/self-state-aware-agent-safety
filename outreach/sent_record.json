@@ -1,0 +1,22 @@
+[
+  {
+    "sent_at_KST": "2026-10-14T08:37:23+09:00",
+    "recipient": "rohinmshah@google.com",
+    "subject": "Google DeepMind research proposal — auditable execution gates for autonomous agents",
+    "status": "SENT",
+    "attachments": [
+      {
+        "filename": "Google_Research_Proposal_EN.pdf",
+        "size": 139843
+      },
+      {
+        "filename": "demo.py",
+        "size": 11800
+      },
+      {
+        "filename": "baseline_results.json",
+        "size": 24083
+      }
+    ]
+  }
+]

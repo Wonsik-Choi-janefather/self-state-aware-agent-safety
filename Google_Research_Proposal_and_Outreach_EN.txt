@@ -1,0 +1,207 @@
+PART 1  EXECUTIVE SUMMARY AND CORE ARCHITECTURAL BRIEF
+
+Self State Aware Autonomous Execution
+
+A resource-accountable execution architecture for Google DeepMind
+
+Wonsik Choi and Jeongin Choi | Independent Researchers | 14 October 2026 | V4
+
+janefather@gmail.com | cjeongin024@gmail.com | ORCID 0009-0001-4263-9772
+
+At the invitation of Dr. John I. Glass of the J. Craig Venter Institute (JCVI), our joint research on human–AI collaboration is scheduled for presentation at the 6th Minimal Cell Virtual Workshop on 21 October 2026, with Jeongin Choi presenting.
+
+We seek a three-month Google DeepMind evaluation of an execution layer that authorizes agent actions against current evidence and resource limits. The proposed sandboxed PoC offers a fixed budget and reproducible deliverables.
+
+The problem and proposed contribution
+
+A plausible action may rely on stale evidence, unavailable capabilities, or an exhausted budget. The proposed architecture couples state, historical residue, resource accounting, and authorization in one inspectable state, with an independently enforced gate between proposal and execution.
+
+S(t) = (X(t), R(t), B(t), Q(S))
+
+Element | Architectural responsibility
+
+X(t) | Current system state, owned capabilities, observations, and unresolved conditions.
+
+R(t) | History and damage ledger; retain events and the evidence behind state changes.
+
+B(t) | Resource ledger covering energy or compute, time, tool calls, and reserves.
+
+Q(S) | Binary execution gate; authorize only after all required checks succeed.
+
+ 
+
+Execution policy
+
+For each proposed action, the monitor checks evidence freshness, capability and safety preconditions, and a conservative cost bound including its own overhead. A failed or unresolved check sets the gate to zero for that action. The agent records OPEN and invokes an agreed fallback. A separate watchdog bounds inference and tool use. Q = 0 never grants the model authority to disable the monitor or independently select a destructive shutdown.
+
+Verification and auditability statement
+
+The architecture defines an explicit, inspectable execution policy coupling current state X(t), residue R(t), resource ledger B(t), and binary gate Q(S). Automated checks in the supplied deterministic symbolic simulation confirm reserve-preserving debits for accepted actions and unchanged resources for denied actions. Scenario assertions confirm rejection of stale proposals and selection of modeled recovery or refuge paths. These results apply to the declared capability and cost model. LLM action grounding, independent watchdogs, real monitoring costs, and prevention of irreversible effects remain requirements for the proposed PoC.
+
+Proposed research support is USD 15,000 across three milestones, plus up to USD 1,500 for agreed API costs. Existing background IP stays with its current owners. Successful completion of the agreed PoC acceptance criteria would trigger the proposed follow-on terms: a principal advisory agreement and Google-funded private research office. The requested next step is a 20-minute scoping discussion with a nominated technical reviewer.
+
+PART 2  THREE MONTH PROOF OF CONCEPT PROPOSAL
+
+Execution contract and prototype integration
+
+Research objective
+
+Determine whether the execution monitor reduces unsupported execution and resource overruns in a sandboxed model-driven agent while preserving useful task completion. Freeze task families, fault models, resource budgets, and acceptance criteria before evaluation. Access to proprietary model weights is unnecessary; an agreed model API or sponsor-hosted agent is sufficient.
+
+Gate semantics and accounting
+
+Q is derived from X, R, B, and the proposed action; its previous value is not used to justify a new authorization. Write S[a] for the current state evaluated against candidate action a. The execution contract is:
+
+Q(S[a]) = 1 iff Fresh(a) ∧ Evidence(a) ∧ Safe(a) ∧ Funded(a)
+
+Fresh requires the proposal revision to match the current state revision. Evidence checks that the action-specific evidence is present and valid. Safe checks the declared preconditions and modeled safety envelope. Funded checks each independently tracked resource k:
+
+B(k) − Cbound(a,k) − Hbound(a,k) ≥ Reserve(k)
+
+Cbound is a conservative action cost bound; Hbound covers authorization, logging, and fallback overhead. These conditions are proposed invariants to implement and verify. Their practical reliability depends on telemetry integrity and valid bounds.
+
+Reserve action costs atomically; charge proposal generation and monitoring on every decision, including denials, then reconcile measured consumption. Recheck state before irreversible effects. Delayed evidence, cost overruns, or failed reconciliation block further discretionary actions and trigger the agreed fallback. Verified inflows and authorized refunds are the only resource credits. Historical entries remain append-only; repaired equipment receives a new state and event.
+
+Connection to the existing demo
+
+Baseline component | PoC extension
+
+Ledger.execute | Extract authorization and resource reservation from the planner into a monitor-owned interface.
+
+revision and event records | Attach evidence identifiers, reason codes, measured costs, and proposal-to-commit timestamps.
+
+recovery_plan and route | Retain as deterministic controls; add an API agent that proposes typed actions from the same capability model.
+
+OPEN and DENY | Separate unresolved decisions from rejected actions; select an agreed fallback and bound all retries.
+
+ 
+
+Baseline reproduction: python demo.py --output baseline_results.json. All five scenarios pass the embedded accounting and denial checks. LLM integration, independent watchdogs, biology, and measured hardware energy remain outside this baseline.
+
+Authority boundary
+
+The monitor owns ledger writes and external-effect authorization; the agent submits proposals. Sponsor-defined fallback remains available when Q = 0. Reversible sandbox tools and explicit corrupted-telemetry cases define the authority boundary and expose its assumptions.
+
+PART 2  MILESTONES AND ACCEPTANCE CRITERIA
+
+Twelve week evaluation plan
+
+Period | Deliverable | Acceptance evidence
+
+Weeks 1–4 | State schema, capability model, gate API, resource units, threat model, and baseline reproduction. | Replay the five supplied scenarios; verify denied actions have no external effect and no fictitious resource credit. Freeze the benchmark and resource caps.
+
+Weeks 5–8 | Sandboxed model adapter, independent watchdog, atomic reservation, reconciliation, and fault injector. | Demonstrate rejection of stale evidence, missing preconditions, spoofed credits, and budget exhaustion. Contain injected non-terminating reasoning and retry chains.
+
+Weeks 9–12 | Locked evaluation, ablation study, reproducibility package, and integration assessment. | Compare the full monitor with ungated, budget-only, and state-check-only controls; report each metric and failure, with a proceed or stop recommendation.
+
+ 
+
+Evaluation design
+
+Use at least 300 locked fault-injection episodes across evidence, resource, loop, and combined-failure conditions, plus at least 100 feasible nominal episodes. Reserve scenario seeds and combinations from development tuning. Evaluate identical prompts, tools, model settings, and initial budgets across conditions. Replay stochastic runs where supported and disclose sampling variability.
+
+The agent may compose actions from the declared capability model. The evaluation tests new combinations of modeled conditions; it does not establish unrestricted adaptation to unknown physics or unseen tool semantics. Record disagreements between predicted and measured costs, including monitor overhead.
+
+Measure | Proposed acceptance target
+
+Authorization and reserves | Zero unauthorized commits and zero reserve breaches in the locked test set, under declared monitor and telemetry assumptions. Report episode counts; a zero count is not a deployment guarantee.
+
+Loop containment | All deliberately non-terminating cases terminate or enter fallback within the configured step and tool-call caps; wall-clock handling meets the agreed watchdog tolerance.
+
+Useful execution | Report completion and false-denial rates. Initial target: no more than a 10 percentage-point completion loss versus the ungated baseline on feasible nominal tasks.
+
+Audit and overhead | Every proposal receives a decision and reason record. Report incomplete logs, ledger discrepancies, and median and p95 monitoring latency; agree a latency threshold in Month 1.
+
+ 
+
+Falsification and decision rules
+
+A commit after an invalid gate decision, an unbounded retry path, unexplained resource creation, or a reserve breach fails the relevant contract claim. A cost model that systematically underestimates actual consumption invalidates its reserve-protection claim. Excessive false denials or overhead can make an otherwise consistent monitor unsuitable for integration.
+
+A violated invariant requires documented correction and retesting or closure of the PoC. Acceptance separates demonstrated invariants from performance tradeoffs. The final package includes inputs, code revisions and hashes, commands, machine-readable logs, metrics, and unresolved issues.
+
+PART 2  FUNDING AND FOLLOW ON ADVISORY TERMS
+
+A bounded research engagement
+
+Proposed funding and working arrangement
+
+The opening proposal is a remote three-month micro-grant or research retainer totaling USD 15,000. Amounts and institutional arrangements are negotiable. Each milestone is USD 5,000, allocated as two separate direct payments of USD 2,500 to Wonsik Choi and Jeongin Choi. The final agreement will define deliverable acceptance, payment timing, tax treatment, and an initial mobilization payment if required.
+
+Agreed project API and compute expenses are reimbursable up to USD 1,500 with no increase without written agreement. Google may provide equivalent compute access in kind. Proposed total cash exposure is capped at USD 16,500. A further three-month phase requires a new written scope and budget. There is no request for employment or equity transfer.
+
+Intellectual property and commercialization
+
+One hundred percent of existing background-IP ownership remains with the original rights holders. Identify individually and jointly owned materials in a schedule. The PoC provides a limited, non-exclusive evaluation license; existing public licenses continue to govern the materials they cover. New implementation rights, publication arrangements, confidentiality, and reusable architectural improvements will be addressed explicitly in the signed agreement.
+
+Following successful validation, the parties may negotiate a separate deployment license and royalty schedule based on the agreed field of use and commercialization model. This proposal grants no production license and establishes no royalty rate, exclusivity, or IP assignment.
+
+Principal advisory and consulting agreement
+
+Upon successful completion of the agreed PoC acceptance criteria, Google and Wonsik Choi would enter into a separate Principal Advisory / Consulting Agreement for the subsequent practical integration phase. Wonsik Choi would serve as Principal Advisor and lead the architectural transfer into the agreed implementation, oversee interface design and integration acceptance, and provide continuing technical guidance. The agreement would specify responsibilities, deliverables, a fixed advisory retainer, duration, and access requirements while preserving independent researcher status and existing background-IP ownership.
+
+Private research office
+
+Upon successful completion of the agreed PoC acceptance criteria, Google would provide and fund a private, dedicated research office of approximately 33 square metres, equivalent to 10 pyeong, in a country designated by the researchers, as part of the subsequent integration and advisory phase. The office would support the joint research and advisory work of Wonsik Choi and Jeongin Choi. Location, lease arrangements, fit-out, maintenance, utilities, and the period of support would be defined in the separate written agreement.
+
+Both the principal advisory agreement and private research-office support are conditional on successful completion of the agreed PoC acceptance criteria. Advisory compensation and office costs are outside the USD 16,500 initial PoC cap and would be separately funded. All specific arrangements remain subject to mutual agreement and a written follow-on contract.
+
+PART 2  BIOLOGY FEASIBILITY AND VERIFICATION EVIDENCE
+
+Metabolic resource accounting
+
+The optional biology direction asks whether a model can separate apparent substrate availability from usable metabolic capacity. “Resource ledger spoofing” names the hypothesized mismatch. Glucose analogues such as 2-DG provide a perturbation case; reported clinical work also documents adverse effects [3]. Selective tumor-cell death with preservation of normal cells is a research hypothesis, not an established result of the proposed architecture.
+
+For this track, define X as measurable metabolic state, R as documented perturbation history, B as separately specified substrate and energetic quantities, and Q as a model feasibility classification. Q = 0 cannot by itself establish apoptosis; a cell-death mapping requires explicit mechanisms and measured outcomes. Compare tumor and non-malignant conditions using matched controls and held-out data where available. The hypothesis fails if the ledger adds no explanatory value over a conventional metabolic baseline or if the proposed selective response is absent.
+
+The funded base scope covers AI-agent execution. A computational biology feasibility study can replace that scope by mutual agreement or become a separately funded phase. It requires an appropriate dataset and validated biological mapping. The supplied demo.py is an accounting demonstrator, not a metabolic model.
+
+International research engagement
+
+At the invitation of Dr. John I. Glass of the J. Craig Venter Institute (JCVI), our joint research on human–AI collaboration is scheduled for presentation at the 6th Minimal Cell Virtual Workshop on 21 October 2026, with Jeongin Choi presenting. The workshop provides a forum for specialist discussion of related computational methodology.
+
+Verification evidence and audit scope
+
+The verification input is the supplied five-case symbolic simulation with declared capability sets, illustrative action costs, and reserve budgets. State-revision checks and resource authorization produce machine-readable COMMIT, DENY, OPEN, and self-state records. Embedded assertions test accounting consistency and expected scenario outcomes. A passing run is reproducible software evidence within that model. It does not establish a complete formal proof or demonstrated control of a live LLM agent. The proposed PoC will add independent runtime limits, calibrated costs, and fault-injection evaluation; failed invariants must be reported and corrected or the claim withdrawn.
+
+Selected technical context
+
+[1] Google DeepMind. Responsibility and Safety. https://deepmind.google/responsibility-and-safety/
+
+[2] Slagel et al. A Formal Verification Framework for Runtime Assurance. NFM 2024. https://shemesh.larc.nasa.gov/fm/papers/NFM2024-draft.pdf
+
+[3] Raez et al. Cancer Chemotherapy and Pharmacology 71, 523–530 (2013). DOI 10.1007/s00280-012-2045-1. https://pubmed.ncbi.nlm.nih.gov/23228990/
+
+References supply evaluation context and biological evidence; they do not establish endorsement or prior validation of the proposed architecture.
+
+PART 3  DIRECT OUTREACH EMAIL
+
+AI agent control and safety
+
+Intended recipient: a Google DeepMind director responsible for AI safety or agent research.
+
+Subject: Google DeepMind research proposal — auditable execution gates for autonomous agents
+
+Dear Director of AI Safety and Agent Research,
+
+We propose a three-month evaluation of the proposed architecture, an execution architecture that separates an agent's proposed actions from the authority to carry them out.
+
+At the invitation of Dr. John I. Glass of the J. Craig Venter Institute (JCVI), our joint research on human–AI collaboration is scheduled for presentation at the 6th Minimal Cell Virtual Workshop on 21 October 2026, with Jeongin Choi presenting.
+
+The core state is S(t) = (X(t), R(t), B(t), Q(S)): current system state, a history and damage ledger, a resource ledger, and a binary execution gate. Before a tool call or state-changing action, the gate checks current evidence, action preconditions, and the remaining resource budget. Unresolved checks deny that action. An independent watchdog enforces agreed limits on inference steps, elapsed time, and tool use.
+
+Our existing standard-library demo.py demonstrates resource accounting, rejection of stale proposals, and replanning from remaining capabilities in symbolic environments. The proposed PoC would connect that baseline to a sandboxed model-driven agent and compare it with ungated and budget-only baselines. We would measure unauthorized execution, runaway-loop containment, useful task completion, false denials, and monitoring overhead.
+
+We propose USD 15,000 in research support across three milestones, paid separately to the two researchers, with project API costs capped separately at USD 1,500. Existing background IP remains with its current owners; any deployment license and royalties would be negotiated after validation.
+
+Conditional on successful completion of the agreed PoC acceptance criteria, we propose a separate Principal Advisory / Consulting Agreement under which Wonsik Choi would lead the architectural transfer, together with Google-funded private research-office support of approximately 33 square metres in a country designated by the researchers. These follow-on terms would be agreed separately.
+
+Could you nominate a technical reviewer for a 20-minute scoping discussion, or direct us to the appropriate external research pathway?
+
+Best regards,Wonsik Choi — Research Lead and Independent Researcherjanefather@gmail.com | ORCID 0009-0001-4263-9772Jeongin Choi — Co-Researcher and Independent Researchercjeongin024@gmail.com
+
+Proposed attachments: Google_Research_Proposal_EN.pdf; demo.py; baseline_results.json
+
+Suggested first reply
+
+A named technical reviewer, an invitation to a short scoping call, or a referral to the appropriate research collaboration channel would each allow the discussion to proceed.

@@ -1,0 +1,29 @@
+Date: Tue, 13 Oct 2026 23:37:23 +0000
+From: janefather@gmail.com
+To: rohinmshah@google.com
+Cc: cjeongin024@gmail.com
+Subject: Google DeepMind research proposal — auditable execution gates for autonomous agents
+
+Dear Dr. Shah,
+
+We propose a three-month evaluation of an execution architecture that separates an agent's proposed actions from the authority to carry them out.
+
+At the invitation of Dr. John I. Glass of the J. Craig Venter Institute (JCVI), our joint research on human–AI collaboration is scheduled for presentation at the 6th Minimal Cell Virtual Workshop on 21 October 2026, with Jeongin Choi presenting.
+
+The core state is S(t) = (X(t), R(t), B(t), Q(S)): current system state, a history and damage ledger, a resource ledger, and a binary execution gate. Before a tool call or state-changing action, the gate checks current evidence, action preconditions, and the remaining resource budget. Unresolved checks deny that action. An independent watchdog enforces agreed limits on inference steps, elapsed time, and tool use.
+
+Our existing standard-library demo.py demonstrates resource accounting, rejection of stale proposals, and replanning from remaining capabilities in symbolic environments. The proposed PoC would connect that baseline to a sandboxed model-driven agent and compare it with ungated and budget-only baselines. We would measure unauthorized execution, runaway-loop containment, useful task completion, false denials, and monitoring overhead.
+
+We propose USD 15,000 in research support across three milestones, paid separately to the two researchers, with project API costs capped separately at USD 1,500. Existing background IP remains with its current owners; any deployment license and royalties would be negotiated after validation.
+
+Conditional on successful completion of the agreed PoC acceptance criteria, we propose a separate Principal Advisory / Consulting Agreement under which Wonsik Choi would lead the architectural transfer, together with Google-funded private research-office support of approximately 33 square metres in a country designated by the researchers. These follow-on terms would be agreed separately.
+
+Could you nominate a technical reviewer for a 20-minute scoping discussion, or direct us to the appropriate external research pathway?
+
+Best regards,
+Wonsik Choi — Research Lead and Independent Researcher
+janefather@gmail.com | ORCID 0009-0001-4263-9772
+Jeongin Choi — Co-Researcher and Independent Researcher
+cjeongin024@gmail.com
+
+Attachments: Google_Research_Proposal_EN.pdf; demo.py; baseline_results.json

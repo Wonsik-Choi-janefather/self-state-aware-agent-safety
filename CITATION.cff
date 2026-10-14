@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "Please cite this proposal and reproducibility package."
+type: software
+title: "Self State Aware Autonomous Execution Google Research Proposal"
+version: "4"
+date-released: 2026-10-14
+authors:
+  - family-names: Choi
+    given-names: Wonsik
+    affiliation: Independent Researcher
+    email: janefather@gmail.com
+    orcid: "https://orcid.org/0009-0001-4263-9772"
+  - family-names: Choi
+    given-names: Jeongin
+    affiliation: Independent Researcher
+    email: cjeongin024@gmail.com

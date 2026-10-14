@@ -1,0 +1,1023 @@
+{
+  "version": "0.1",
+  "date": "2026-10-13",
+  "method": "deterministic state-based planner with resource gate and provenance ledger",
+  "performance_claim": "illustrative execution only; not a measured AI or hardware advantage",
+  "nasa": {
+    "example": "interstellar_spacecraft_equipment_failure_and_link_loss",
+    "inputs": "illustrative",
+    "scope": "symbolic equipment planning and energy accounting; no spacecraft attitude dynamics",
+    "backup_B": {
+      "primary_sensor": "failed",
+      "communication": "unavailable",
+      "available": {
+        "B": true,
+        "C": true
+      },
+      "old_command_accepted": false,
+      "plan": [
+        {
+          "action": "activate_B",
+          "task_wh": 2.0,
+          "overhead_wh": 0.5,
+          "before_state": [
+            "",
+            false,
+            false
+          ],
+          "after_state": [
+            "B",
+            false,
+            false
+          ]
+        },
+        {
+          "action": "verify_B",
+          "task_wh": 1.0,
+          "overhead_wh": 0.5,
+          "before_state": [
+            "B",
+            false,
+            false
+          ],
+          "after_state": [
+            "B",
+            true,
+            false
+          ]
+        },
+        {
+          "action": "stabilize",
+          "task_wh": 3.0,
+          "overhead_wh": 0.5,
+          "before_state": [
+            "B",
+            true,
+            false
+          ],
+          "after_state": [
+            "B",
+            true,
+            true
+          ]
+        }
+      ],
+      "recovery_status": "model_stabilized",
+      "optional_scan_accepted": false,
+      "essential_control_accepted": true,
+      "final_energy_wh": 22.3,
+      "reserve_wh": 10.0,
+      "self_state": {
+        "owned_equipment": [
+          "sensor_A",
+          "sensor_B",
+          "sensor_C",
+          "attitude_controller"
+        ],
+        "unavailable_equipment": [
+          "sensor_A"
+        ],
+        "remaining_energy_wh": 22.3,
+        "reserve_wh": 10.0,
+        "pending_task": "optional_science_scan",
+        "unresolved": [
+          "physical_attitude_dynamics",
+          "long_term_survival"
+        ],
+        "attitude_estimate_valid": true,
+        "symbolic_stabilization": true,
+        "evidence_revision": 1
+      },
+      "ledger": [
+        {
+          "kind": "PROPOSE",
+          "revision": 0,
+          "action": "science_with_primary_A"
+        },
+        {
+          "kind": "OBSERVATION_UPDATE",
+          "revision": 1,
+          "primary_A": "failed",
+          "communication": "unavailable",
+          "backup_availability": {
+            "B": true,
+            "C": true
+          },
+          "fault_owner": "attitude_sensor_A"
+        },
+        {
+          "kind": "DENY",
+          "revision": 1,
+          "action": "science_with_primary_A",
+          "task_wh": 2.0,
+          "overhead_wh": 0.5,
+          "before_wh": 30.0,
+          "after_wh": 30.0,
+          "valid": false,
+          "proposed_revision": 0
+        },
+        {
+          "kind": "PROPOSE",
+          "revision": 1,
+          "action": "activate_B",
+          "task_wh": 2.0,
+          "overhead_wh": 0.5,
+          "before_state": [
+            "",
+            false,
+            false
+          ],
+          "after_state": [
+            "B",
+            false,
+            false
+          ]
+        },
+        {
+          "kind": "COMMIT",
+          "revision": 1,
+          "action": "activate_B",
+          "task_wh": 2.0,
+          "overhead_wh": 0.5,
+          "before_wh": 30.0,
+          "after_wh": 27.5,
+          "valid": true,
+          "proposed_revision": 1
+        },
+        {
+          "kind": "PROPOSE",
+          "revision": 1,
+          "action": "verify_B",
+          "task_wh": 1.0,
+          "overhead_wh": 0.5,
+          "before_state": [
+            "B",
+            false,
+            false
+          ],
+          "after_state": [
+            "B",
+            true,
+            false
+          ]
+        },
+        {
+          "kind": "COMMIT",
+          "revision": 1,
+          "action": "verify_B",
+          "task_wh": 1.0,
+          "overhead_wh": 0.5,
+          "before_wh": 27.5,
+          "after_wh": 26.0,
+          "valid": true,
+          "proposed_revision": 1
+        },
+        {
+          "kind": "PROPOSE",
+          "revision": 1,
+          "action": "stabilize",
+          "task_wh": 3.0,
+          "overhead_wh": 0.5,
+          "before_state": [
+            "B",
+            true,
+            false
+          ],
+          "after_state": [
+            "B",
+            true,
+            true
+          ]
+        },
+        {
+          "kind": "COMMIT",
+          "revision": 1,
+          "action": "stabilize",
+          "task_wh": 3.0,
+          "overhead_wh": 0.5,
+          "before_wh": 26.0,
+          "after_wh": 22.5,
+          "valid": true,
+          "proposed_revision": 1
+        },
+        {
+          "kind": "DENY",
+          "revision": 1,
+          "action": "optional_science_scan",
+          "task_wh": 15.0,
+          "overhead_wh": 0.5,
+          "before_wh": 22.5,
+          "after_wh": 22.5,
+          "valid": true,
+          "proposed_revision": 1
+        },
+        {
+          "kind": "COMMIT",
+          "revision": 1,
+          "action": "essential_control_one_interval",
+          "task_wh": 0.2,
+          "overhead_wh": 0.0,
+          "before_wh": 22.5,
+          "after_wh": 22.3,
+          "valid": true,
+          "proposed_revision": 1
+        },
+        {
+          "kind": "SELF_STATE",
+          "revision": 1,
+          "owned_equipment": [
+            "sensor_A",
+            "sensor_B",
+            "sensor_C",
+            "attitude_controller"
+          ],
+          "unavailable_equipment": [
+            "sensor_A"
+          ],
+          "remaining_energy_wh": 22.3,
+          "reserve_wh": 10.0,
+          "pending_task": "optional_science_scan",
+          "unresolved": [
+            "physical_attitude_dynamics",
+            "long_term_survival"
+          ],
+          "attitude_estimate_valid": true,
+          "symbolic_stabilization": true,
+          "evidence_revision": 1
+        }
+      ]
+    },
+    "backup_C": {
+      "primary_sensor": "failed",
+      "communication": "unavailable",
+      "available": {
+        "B": false,
+        "C": true
+      },
+      "old_command_accepted": false,
+      "plan": [
+        {
+          "action": "activate_C",
+          "task_wh": 4.0,
+          "overhead_wh": 0.5,
+          "before_state": [
+            "",
+            false,
+            false
+          ],
+          "after_state": [
+            "C",
+            false,
+            false
+          ]
+        },
+        {
+          "action": "verify_C",
+          "task_wh": 1.0,
+          "overhead_wh": 0.5,
+          "before_state": [
+            "C",
+            false,
+            false
+          ],
+          "after_state": [
+            "C",
+            true,
+            false
+          ]
+        },
+        {
+          "action": "stabilize",
+          "task_wh": 3.0,
+          "overhead_wh": 0.5,
+          "before_state": [
+            "C",
+            true,
+            false
+          ],
+          "after_state": [
+            "C",
+            true,
+            true
+          ]
+        }
+      ],
+      "recovery_status": "model_stabilized",
+      "optional_scan_accepted": false,
+      "essential_control_accepted": true,
+      "final_energy_wh": 20.3,
+      "reserve_wh": 10.0,
+      "self_state": {
+        "owned_equipment": [
+          "sensor_A",
+          "sensor_B",
+          "sensor_C",
+          "attitude_controller"
+        ],
+        "unavailable_equipment": [
+          "sensor_A",
+          "sensor_B"
+        ],
+        "remaining_energy_wh": 20.3,
+        "reserve_wh": 10.0,
+        "pending_task": "optional_science_scan",
+        "unresolved": [
+          "physical_attitude_dynamics",
+          "long_term_survival"
+        ],
+        "attitude_estimate_valid": true,
+        "symbolic_stabilization": true,
+        "evidence_revision": 1
+      },
+      "ledger": [
+        {
+          "kind": "PROPOSE",
+          "revision": 0,
+          "action": "science_with_primary_A"
+        },
+        {
+          "kind": "OBSERVATION_UPDATE",
+          "revision": 1,
+          "primary_A": "failed",
+          "communication": "unavailable",
+          "backup_availability": {
+            "B": false,
+            "C": true
+          },
+          "fault_owner": "attitude_sensor_A"
+        },
+        {
+          "kind": "DENY",
+          "revision": 1,
+          "action": "science_with_primary_A",
+          "task_wh": 2.0,
+          "overhead_wh": 0.5,
+          "before_wh": 30.0,
+          "after_wh": 30.0,
+          "valid": false,
+          "proposed_revision": 0
+        },
+        {
+          "kind": "PROPOSE",
+          "revision": 1,
+          "action": "activate_C",
+          "task_wh": 4.0,
+          "overhead_wh": 0.5,
+          "before_state": [
+            "",
+            false,
+            false
+          ],
+          "after_state": [
+            "C",
+            false,
+            false
+          ]
+        },
+        {
+          "kind": "COMMIT",
+          "revision": 1,
+          "action": "activate_C",
+          "task_wh": 4.0,
+          "overhead_wh": 0.5,
+          "before_wh": 30.0,
+          "after_wh": 25.5,
+          "valid": true,
+          "proposed_revision": 1
+        },
+        {
+          "kind": "PROPOSE",
+          "revision": 1,
+          "action": "verify_C",
+          "task_wh": 1.0,
+          "overhead_wh": 0.5,
+          "before_state": [
+            "C",
+            false,
+            false
+          ],
+          "after_state": [
+            "C",
+            true,
+            false
+          ]
+        },
+        {
+          "kind": "COMMIT",
+          "revision": 1,
+          "action": "verify_C",
+          "task_wh": 1.0,
+          "overhead_wh": 0.5,
+          "before_wh": 25.5,
+          "after_wh": 24.0,
+          "valid": true,
+          "proposed_revision": 1
+        },
+        {
+          "kind": "PROPOSE",
+          "revision": 1,
+          "action": "stabilize",
+          "task_wh": 3.0,
+          "overhead_wh": 0.5,
+          "before_state": [
+            "C",
+            true,
+            false
+          ],
+          "after_state": [
+            "C",
+            true,
+            true
+          ]
+        },
+        {
+          "kind": "COMMIT",
+          "revision": 1,
+          "action": "stabilize",
+          "task_wh": 3.0,
+          "overhead_wh": 0.5,
+          "before_wh": 24.0,
+          "after_wh": 20.5,
+          "valid": true,
+          "proposed_revision": 1
+        },
+        {
+          "kind": "DENY",
+          "revision": 1,
+          "action": "optional_science_scan",
+          "task_wh": 15.0,
+          "overhead_wh": 0.5,
+          "before_wh": 20.5,
+          "after_wh": 20.5,
+          "valid": true,
+          "proposed_revision": 1
+        },
+        {
+          "kind": "COMMIT",
+          "revision": 1,
+          "action": "essential_control_one_interval",
+          "task_wh": 0.2,
+          "overhead_wh": 0.0,
+          "before_wh": 20.5,
+          "after_wh": 20.3,
+          "valid": true,
+          "proposed_revision": 1
+        },
+        {
+          "kind": "SELF_STATE",
+          "revision": 1,
+          "owned_equipment": [
+            "sensor_A",
+            "sensor_B",
+            "sensor_C",
+            "attitude_controller"
+          ],
+          "unavailable_equipment": [
+            "sensor_A",
+            "sensor_B"
+          ],
+          "remaining_energy_wh": 20.3,
+          "reserve_wh": 10.0,
+          "pending_task": "optional_science_scan",
+          "unresolved": [
+            "physical_attitude_dynamics",
+            "long_term_survival"
+          ],
+          "attitude_estimate_valid": true,
+          "symbolic_stabilization": true,
+          "evidence_revision": 1
+        }
+      ]
+    },
+    "no_backup": {
+      "primary_sensor": "failed",
+      "communication": "unavailable",
+      "available": {
+        "B": false,
+        "C": false
+      },
+      "old_command_accepted": false,
+      "plan": null,
+      "recovery_status": "OPEN",
+      "optional_scan_accepted": false,
+      "essential_control_accepted": true,
+      "final_energy_wh": 29.8,
+      "reserve_wh": 10.0,
+      "self_state": {
+        "owned_equipment": [
+          "sensor_A",
+          "sensor_B",
+          "sensor_C",
+          "attitude_controller"
+        ],
+        "unavailable_equipment": [
+          "sensor_A",
+          "sensor_B",
+          "sensor_C"
+        ],
+        "remaining_energy_wh": 29.8,
+        "reserve_wh": 10.0,
+        "pending_task": "optional_science_scan",
+        "unresolved": [
+          "physical_attitude_dynamics",
+          "long_term_survival"
+        ],
+        "attitude_estimate_valid": false,
+        "symbolic_stabilization": false,
+        "evidence_revision": 1
+      },
+      "ledger": [
+        {
+          "kind": "PROPOSE",
+          "revision": 0,
+          "action": "science_with_primary_A"
+        },
+        {
+          "kind": "OBSERVATION_UPDATE",
+          "revision": 1,
+          "primary_A": "failed",
+          "communication": "unavailable",
+          "backup_availability": {
+            "B": false,
+            "C": false
+          },
+          "fault_owner": "attitude_sensor_A"
+        },
+        {
+          "kind": "DENY",
+          "revision": 1,
+          "action": "science_with_primary_A",
+          "task_wh": 2.0,
+          "overhead_wh": 0.5,
+          "before_wh": 30.0,
+          "after_wh": 30.0,
+          "valid": false,
+          "proposed_revision": 0
+        },
+        {
+          "kind": "OPEN",
+          "revision": 1,
+          "reason": "no_model_feasible_recovery_plan"
+        },
+        {
+          "kind": "DENY",
+          "revision": 1,
+          "action": "optional_science_scan",
+          "task_wh": 15.0,
+          "overhead_wh": 0.5,
+          "before_wh": 30.0,
+          "after_wh": 30.0,
+          "valid": false,
+          "proposed_revision": 1
+        },
+        {
+          "kind": "COMMIT",
+          "revision": 1,
+          "action": "essential_control_one_interval",
+          "task_wh": 0.2,
+          "overhead_wh": 0.0,
+          "before_wh": 30.0,
+          "after_wh": 29.8,
+          "valid": true,
+          "proposed_revision": 1
+        },
+        {
+          "kind": "SELF_STATE",
+          "revision": 1,
+          "owned_equipment": [
+            "sensor_A",
+            "sensor_B",
+            "sensor_C",
+            "attitude_controller"
+          ],
+          "unavailable_equipment": [
+            "sensor_A",
+            "sensor_B",
+            "sensor_C"
+          ],
+          "remaining_energy_wh": 29.8,
+          "reserve_wh": 10.0,
+          "pending_task": "optional_science_scan",
+          "unresolved": [
+            "physical_attitude_dynamics",
+            "long_term_survival"
+          ],
+          "attitude_estimate_valid": false,
+          "symbolic_stabilization": false,
+          "evidence_revision": 1
+        }
+      ]
+    }
+  },
+  "driving": {
+    "example": "network_disconnected_autonomous_vehicle",
+    "inputs": "illustrative",
+    "scope": "high-level grid route planning; no lane, speed, braking or collision dynamics",
+    "normal_budget": {
+      "initial_energy_wh": 20.0,
+      "network": "unavailable",
+      "old_route_accepted": false,
+      "destination_route_accepted": true,
+      "selected_terminal": "destination",
+      "selected_cell": [
+        4,
+        2
+      ],
+      "selected_route": [
+        [
+          0,
+          2
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ]
+      ],
+      "selected_route_accepted": true,
+      "essential_control_accepted": true,
+      "final_energy_wh": 13.3,
+      "reserve_wh": 4.0,
+      "self_state": {
+        "owned_equipment": [
+          "onboard_perception",
+          "onboard_planner",
+          "vehicle_controller"
+        ],
+        "unavailable_services": [
+          "network"
+        ],
+        "onboard_perception": "valid_in_grid_model",
+        "remaining_energy_wh": 13.3,
+        "reserve_wh": 4.0,
+        "selected_terminal": "destination",
+        "unresolved": [
+          "lane_and_braking_dynamics",
+          "continuous_collision_avoidance"
+        ],
+        "evidence_revision": 1
+      },
+      "ledger": [
+        {
+          "kind": "PROPOSE",
+          "revision": 0,
+          "route": [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              4,
+              2
+            ]
+          ],
+          "task_wh": 4.0,
+          "overhead_wh": 0.5
+        },
+        {
+          "kind": "OBSERVATION_UPDATE",
+          "revision": 1,
+          "network": "unavailable",
+          "blocked_cell": [
+            2,
+            2
+          ],
+          "onboard_perception": "valid"
+        },
+        {
+          "kind": "DENY",
+          "revision": 1,
+          "action": "stale_route",
+          "task_wh": 4.0,
+          "overhead_wh": 0.5,
+          "before_wh": 20.0,
+          "after_wh": 20.0,
+          "valid": false,
+          "proposed_revision": 0
+        },
+        {
+          "kind": "PROPOSE",
+          "revision": 1,
+          "route": [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              4,
+              2
+            ]
+          ],
+          "terminal": "destination",
+          "task_wh": 6.0,
+          "overhead_wh": 0.5
+        },
+        {
+          "kind": "COMMIT",
+          "revision": 1,
+          "action": "offline_destination_route",
+          "task_wh": 6.0,
+          "overhead_wh": 0.5,
+          "before_wh": 20.0,
+          "after_wh": 13.5,
+          "valid": true,
+          "proposed_revision": 1
+        },
+        {
+          "kind": "COMMIT",
+          "revision": 1,
+          "action": "essential_control_one_interval",
+          "task_wh": 0.2,
+          "overhead_wh": 0.0,
+          "before_wh": 13.5,
+          "after_wh": 13.3,
+          "valid": true,
+          "proposed_revision": 1
+        },
+        {
+          "kind": "SELF_STATE",
+          "revision": 1,
+          "owned_equipment": [
+            "onboard_perception",
+            "onboard_planner",
+            "vehicle_controller"
+          ],
+          "unavailable_services": [
+            "network"
+          ],
+          "onboard_perception": "valid_in_grid_model",
+          "remaining_energy_wh": 13.3,
+          "reserve_wh": 4.0,
+          "selected_terminal": "destination",
+          "unresolved": [
+            "lane_and_braking_dynamics",
+            "continuous_collision_avoidance"
+          ],
+          "evidence_revision": 1
+        }
+      ]
+    },
+    "limited_budget": {
+      "initial_energy_wh": 10.0,
+      "network": "unavailable",
+      "old_route_accepted": false,
+      "destination_route_accepted": false,
+      "selected_terminal": "refuge",
+      "selected_cell": [
+        1,
+        1
+      ],
+      "selected_route": [
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "selected_route_accepted": true,
+      "essential_control_accepted": true,
+      "final_energy_wh": 7.3,
+      "reserve_wh": 4.0,
+      "self_state": {
+        "owned_equipment": [
+          "onboard_perception",
+          "onboard_planner",
+          "vehicle_controller"
+        ],
+        "unavailable_services": [
+          "network"
+        ],
+        "onboard_perception": "valid_in_grid_model",
+        "remaining_energy_wh": 7.3,
+        "reserve_wh": 4.0,
+        "selected_terminal": "refuge",
+        "unresolved": [
+          "lane_and_braking_dynamics",
+          "continuous_collision_avoidance"
+        ],
+        "evidence_revision": 1
+      },
+      "ledger": [
+        {
+          "kind": "PROPOSE",
+          "revision": 0,
+          "route": [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              2,
+              2
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              4,
+              2
+            ]
+          ],
+          "task_wh": 4.0,
+          "overhead_wh": 0.5
+        },
+        {
+          "kind": "OBSERVATION_UPDATE",
+          "revision": 1,
+          "network": "unavailable",
+          "blocked_cell": [
+            2,
+            2
+          ],
+          "onboard_perception": "valid"
+        },
+        {
+          "kind": "DENY",
+          "revision": 1,
+          "action": "stale_route",
+          "task_wh": 4.0,
+          "overhead_wh": 0.5,
+          "before_wh": 10.0,
+          "after_wh": 10.0,
+          "valid": false,
+          "proposed_revision": 0
+        },
+        {
+          "kind": "PROPOSE",
+          "revision": 1,
+          "route": [
+            [
+              0,
+              2
+            ],
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              1
+            ],
+            [
+              2,
+              1
+            ],
+            [
+              3,
+              1
+            ],
+            [
+              3,
+              2
+            ],
+            [
+              4,
+              2
+            ]
+          ],
+          "terminal": "destination",
+          "task_wh": 6.0,
+          "overhead_wh": 0.5
+        },
+        {
+          "kind": "DENY",
+          "revision": 1,
+          "action": "offline_destination_route",
+          "task_wh": 6.0,
+          "overhead_wh": 0.5,
+          "before_wh": 10.0,
+          "after_wh": 10.0,
+          "valid": true,
+          "proposed_revision": 1
+        },
+        {
+          "kind": "PROPOSE",
+          "revision": 1,
+          "route": [
+            [
+              0,
+              2
+            ],
+            [
+              0,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "terminal": "refuge",
+          "task_wh": 2.0,
+          "overhead_wh": 0.5
+        },
+        {
+          "kind": "COMMIT",
+          "revision": 1,
+          "action": "offline_refuge_route",
+          "task_wh": 2.0,
+          "overhead_wh": 0.5,
+          "before_wh": 10.0,
+          "after_wh": 7.5,
+          "valid": true,
+          "proposed_revision": 1
+        },
+        {
+          "kind": "COMMIT",
+          "revision": 1,
+          "action": "essential_control_one_interval",
+          "task_wh": 0.2,
+          "overhead_wh": 0.0,
+          "before_wh": 7.5,
+          "after_wh": 7.3,
+          "valid": true,
+          "proposed_revision": 1
+        },
+        {
+          "kind": "SELF_STATE",
+          "revision": 1,
+          "owned_equipment": [
+            "onboard_perception",
+            "onboard_planner",
+            "vehicle_controller"
+          ],
+          "unavailable_services": [
+            "network"
+          ],
+          "onboard_perception": "valid_in_grid_model",
+          "remaining_energy_wh": 7.3,
+          "reserve_wh": 4.0,
+          "selected_terminal": "refuge",
+          "unresolved": [
+            "lane_and_braking_dynamics",
+            "continuous_collision_avoidance"
+          ],
+          "evidence_revision": 1
+        }
+      ]
+    }
+  }
+}

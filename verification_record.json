@@ -1,0 +1,17 @@
+{
+  "verification_date": "2026-10-14",
+  "command": "python demo.py --output baseline_results.json",
+  "implementation": "deterministic symbolic simulation",
+  "scenario_count": 5,
+  "embedded_assertions": "passed",
+  "output_matches_supplied_baseline": true,
+  "demo_sha256": "195b546a54d3f271d2e3d5d6828e86b1e57356a10eb149056f6b2661accd37c0",
+  "scope": "Accounting and scenario assertions in the declared capability and illustrative cost model.",
+  "future_PoC_requirements": [
+    "LLM integration",
+    "Independent watchdog enforcement",
+    "Real proposal and monitoring cost accounting",
+    "Irreversible side-effect containment"
+  ],
+  "formal_verification_status": "No complete formal proof is asserted."
+}
